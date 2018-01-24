@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "E:\\work\\personal\\obo\\IMLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\notification_bg.xml",
+        "source": "D:\\2_SDK\\sdk3\\.android\\build-cache\\2638d84043fa4cfb68f7dc4e169b774ffeaa9942\\output\\res\\drawable\\notification_bg.xml"
+    },
+    {
+        "merged": "E:\\work\\personal\\obo\\IMLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\notification_bg_low.xml",
+        "source": "D:\\2_SDK\\sdk3\\.android\\build-cache\\2638d84043fa4cfb68f7dc4e169b774ffeaa9942\\output\\res\\drawable\\notification_bg_low.xml"
+    },
+    {
+        "merged": "E:\\work\\personal\\obo\\IMLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\notification_tile_bg.xml",
+        "source": "D:\\2_SDK\\sdk3\\.android\\build-cache\\2638d84043fa4cfb68f7dc4e169b774ffeaa9942\\output\\res\\drawable\\notification_tile_bg.xml"
+    },
+    {
+        "merged": "E:\\work\\personal\\obo\\IMLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\notification_icon_background.xml",
+        "source": "D:\\2_SDK\\sdk3\\.android\\build-cache\\2638d84043fa4cfb68f7dc4e169b774ffeaa9942\\output\\res\\drawable\\notification_icon_background.xml"
+    }
+]
