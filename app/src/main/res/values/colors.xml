@@ -5,4 +5,10 @@
     <color name="colorAccent">#FF4081</color>
     <color name="conversation_title_text_color">#ffffff</color>
     <color name="title_background">#888888</color>
+    <color name="login_background">#ffffff</color>
+    <color name="cwet_background">#888888</color>
+    <color name="cwet_text_color">#FFFFFF</color>
+    <color name="login_text_color">#FFFFFF</color>
+    <color name="text_gray">#999999</color>
+    <color name="main_theme_color">#0195ff</color>
 </resources>

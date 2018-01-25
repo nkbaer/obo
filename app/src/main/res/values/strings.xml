@@ -3,4 +3,22 @@
     <string name="go_talk">进入聊天</string>
     <string name="get_conversation_fail">获取聊天列表失败，请稍后重试</string>
     <string name="get_conversation_success">创建会话成功</string>
+    <string name="loading">加载中...</string>
+    <string name="login">登录</string>
+    <string name="forgot_password">忘记密码</string>
+    <string name="new_user">新用户</string>
+    <string name="phone_number">手机号</string>
+    <string name="password">密码</string>
+    <string name="phone_number_is_null">手机号码为空</string>
+    <string name="password_is_null">密码为空</string>
+    <string name="password_cannot_contain_spaces">密码不能包含空格</string>
+    <string name="layout_dialog_loading">正在加载</string>
+    <string name="network_unavailable">当前网络不可用</string>
+    <string name="network_issue_try_again">网络问题请稍后重试</string>
+    <string name="phone_or_psw_error">用户名或者密码错误</string>
+    <string name="login_success">登录成功</string>
+    <string name="network_not_available">网络不可用</string>
+    <string name="login_api_fail">登录请求接口失败</string>
+    <string name="sync_userinfo_api_fail">同步用户信息接口请求失败</string>
+    <string name="get_token_api_fail">获取token接口请求失败</string>
 </resources>
