@@ -2,7 +2,6 @@ package android.obo.com.ui.activity;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.obo.com.obo.HttpException;
 import android.obo.com.obo.R;
 import android.obo.com.server.response.GetTokenResponse;
 import android.obo.com.server.response.GetUserInfoByIdResponse;
@@ -128,10 +127,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
                 request(LOGIN, true);
                 break;
             case R.id.tv_login_forgot:
-                startActivityForResult(new Intent(this, RegisterActivity.class), 1);
+                startActivityForResult(new Intent(this, ForgetPasswordActivity.class), 2);
                 break;
             case R.id.tv_login_register:
-                startActivityForResult(new Intent(this, ForgetPasswordActivity.class), 2);
+                startActivityForResult(new Intent(this, RegisterActivity.class), 1);
                 break;
         }
     }
@@ -167,7 +166,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
-    public Object doInBackground(int requestCode, String parameter) throws HttpException
+    public Object doInBackground(int requestCode, String parameter) throws Exception
     {
         switch (requestCode)
         {
@@ -190,7 +189,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
             {
                 case LOGIN:
                     LoginResponse loginResponse = (LoginResponse) result;
-                    if (loginResponse.getCode() == 200)
+                    if (loginResponse.getCode() == HTTP_RESPONSE_OK)
                     {
                         loginToken = loginResponse.getResult().getToken();
                         if (!TextUtils.isEmpty(loginToken))
@@ -234,12 +233,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
                     break;
                 case SYNC_USER_INFO:
                     GetUserInfoByIdResponse userInfoByIdResponse = (GetUserInfoByIdResponse) result;
-                    if (userInfoByIdResponse.getCode() == 200)
+                    if (userInfoByIdResponse.getCode() == HTTP_RESPONSE_OK)
                     {
                         if (TextUtils.isEmpty(userInfoByIdResponse.getResult().getPortraitUri()))
                         {
-                            userInfoByIdResponse.getResult().setPortraitUri(RongGenerate.generateDefaultAvatar(userInfoByIdResponse.getResult().getNickname()
-                                    , userInfoByIdResponse.getResult().getId()));
+                            Log.e(TAG,"portraitUri is null");
                         }
                         String nickName = userInfoByIdResponse.getResult().getNickname();
                         String portraitUri = userInfoByIdResponse.getResult().getPortraitUri();
@@ -248,12 +246,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
                         RongIM.getInstance().refreshUserInfoCache(new UserInfo(connectResultId, nickName, Uri.parse(portraitUri)));
                     }
                     //不继续在login界面同步好友,群组,群组成员信息
-                    SealUserInfoManager.getInstance().getAllUserInfo();
+                    //TODO 获取好友信息
                     goToMain();
                     break;
                 case GET_TOKEN:
                     GetTokenResponse tokenResponse = (GetTokenResponse) result;
-                    if (tokenResponse.getCode() == 200)
+                    if (tokenResponse.getCode() == HTTP_RESPONSE_OK)
                     {
                         String token = tokenResponse.getResult().getToken();
                         if (!TextUtils.isEmpty(token))
@@ -272,7 +270,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
                                     connectResultId = s;
                                     Log.e("connect", "onSuccess userid:" + s);
                                     ConfigHelper.setLoginId(s);
-                                    SealUserInfoManager.getInstance().openDB();
                                     request(SYNC_USER_INFO, true);
                                 }
 

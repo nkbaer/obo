@@ -21,4 +21,18 @@
     <string name="login_api_fail">登录请求接口失败</string>
     <string name="sync_userinfo_api_fail">同步用户信息接口请求失败</string>
     <string name="get_token_api_fail">获取token接口请求失败</string>
+    <string name="send_code">发送验证码</string>
+    <string name="register">注册</string>
+    <string name="nickname">昵称</string>
+    <string name="code">短信验证码</string>
+    <string name="name_is_null">昵称为空</string>
+    <string name="name_contain_spaces">昵称包含空格</string>
+    <string name="code_is_null">验证码为空</string>
+    <string name="phone_number_available">手机号码可用</string>
+    <string name="phone_number_has_been_registered">手机号码已经被注册</string>
+    <string name="messge_send">短信验证码已发送</string>
+    <string name="message_frequency">短信发送频率超限</string>
+    <string name="verification_code_error">验证码错误</string>
+    <string name="verification_code_timeout">验证码过期,请重新请求</string>
+    <string name="register_success">注册成功</string>
 </resources>

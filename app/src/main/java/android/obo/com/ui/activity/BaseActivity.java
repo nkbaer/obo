@@ -2,8 +2,7 @@ package android.obo.com.ui.activity;
 
 import android.content.Context;
 import android.media.AudioManager;
-import android.obo.com.obo.HttpException;
-import android.obo.com.obo.OboAction;
+import android.obo.com.server.OboAction;
 import android.obo.com.obo.R;
 import android.obo.com.utils.ToastUtils;
 import android.obo.com.server.async.AsyncTaskManager;
@@ -22,6 +21,7 @@ public class BaseActivity extends FragmentActivity implements OnDataListener
     public AsyncTaskManager mAsyncTaskManager;
     protected OboAction action;
     protected Context context;
+    protected static final int HTTP_RESPONSE_OK = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -80,7 +80,7 @@ public class BaseActivity extends FragmentActivity implements OnDataListener
     }
 
     @Override
-    public Object doInBackground(int requestCode, String parameter) throws HttpException
+    public Object doInBackground(int requestCode, String parameter) throws Exception
     {
         return null;
     }

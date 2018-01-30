@@ -3,9 +3,13 @@ package android.obo.com.server.async;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.obo.com.obo.HttpException;
 
-import io.rong.eventbus.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.IOException;
+
 
 /**
  * Created by liuhfa on 2018/1/25.
@@ -98,6 +102,7 @@ public class AsyncTaskManager
      * 异步线程
      * @param bean
      */
+    @Subscribe(threadMode = ThreadMode.ASYNC,priority = 0,sticky = true)
     public void onEventAsync(AsyncRequest bean) {
         AsyncResult result = new AsyncResult(bean.getRequestCode(), bean.isCheckNetwork(), bean.getListener());
         try {
@@ -111,7 +116,7 @@ public class AsyncTaskManager
         } catch (Exception e) {
             e.printStackTrace();
             result.setResult(e);
-            if (e instanceof HttpException) {
+            if (e instanceof IOException) {
                 result.setState(HTTP_ERROR_CODE);
             } else {
                 result.setState(REQUEST_ERROR_CODE);
@@ -125,6 +130,7 @@ public class AsyncTaskManager
      * 在数据返回到UI线程中处理
      * @param bean
      */
+    @Subscribe(threadMode = ThreadMode.MAIN,priority = 0,sticky = true)
     public void onEventMainThread(AsyncResult bean) {
         switch (bean.getState()) {
             case REQUEST_SUCCESS_CODE:

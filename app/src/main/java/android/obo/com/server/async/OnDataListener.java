@@ -1,6 +1,5 @@
 package android.obo.com.server.async;
 
-import android.obo.com.obo.HttpException;
 
 /**
  * Created by liuhfa on 2018/1/25.
@@ -16,7 +15,7 @@ public interface OnDataListener
      * @return
      * @throws Exception
      */
-    Object doInBackground(int requestCode, String parameter) throws HttpException;
+    Object doInBackground(int requestCode, String parameter) throws Exception;
     /**
      * 成功方法（可直接更新UI）
      * @param requestCode 请求码

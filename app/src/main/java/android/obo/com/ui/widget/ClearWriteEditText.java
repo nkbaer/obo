@@ -11,12 +11,13 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.widget.EditText;
 
 /**
  * Created by liuhfa on 2018/1/25.
  */
 
-public class ClearWriteEditText extends android.support.v7.widget.AppCompatEditText implements View.OnFocusChangeListener , TextWatcher
+public class ClearWriteEditText extends EditText implements View.OnFocusChangeListener , TextWatcher
 {
     /**
      * 删除按钮的引用
