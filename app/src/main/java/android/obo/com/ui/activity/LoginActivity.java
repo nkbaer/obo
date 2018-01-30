@@ -1,14 +1,16 @@
 package android.obo.com.ui.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.obo.com.obo.HttpException;
+import android.obo.com.obo.R;
+import android.obo.com.server.response.GetTokenResponse;
+import android.obo.com.server.response.GetUserInfoByIdResponse;
+import android.obo.com.server.response.LoginResponse;
 import android.obo.com.ui.widget.ClearWriteEditText;
+import android.obo.com.ui.widget.LoadDialog;
 import android.obo.com.utils.CommonUtils;
 import android.obo.com.utils.ConfigHelper;
-import android.obo.com.ui.widget.LoadDialog;
-import android.obo.com.obo.R;
 import android.obo.com.utils.ToastUtils;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +20,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import io.rong.imkit.RongIM;
@@ -209,7 +210,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
                                     connectResultId = s;
                                     Log.e("connect", "onSuccess userid:" + s);
                                     ConfigHelper.setLoginId(s);
-                                    SealUserInfoManager.getInstance().openDB();
                                     request(SYNC_USER_INFO, true);
                                 }
 

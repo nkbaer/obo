@@ -6,7 +6,7 @@ import android.content.Context;
  * Created by liuhfa on 2018/1/25.
  */
 
-public class OboAction
+public class OboAction extends BaseAction
 {
     public OboAction(Context context)
     {
@@ -22,5 +22,9 @@ public class OboAction
     public Object getToken()
     {
         return new Object();
+    }
+
+    public Object getUserInfoById(String connectResultId) {
+        return null;
     }
 }
