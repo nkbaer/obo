@@ -35,4 +35,8 @@
     <string name="verification_code_error">验证码错误</string>
     <string name="verification_code_timeout">验证码过期,请重新请求</string>
     <string name="register_success">注册成功</string>
+    <string name="check_phone_fail">手机号可用请求失败</string>
+    <string name="request_code_fail">获取验证码请求失败</string>
+    <string name="verify_code_fail">验证码是否可用请求失败</string>
+    <string name="reg_request_fail">注册请求失败</string>
 </resources>

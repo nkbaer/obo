@@ -230,18 +230,18 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     {
         switch (requestCode) {
             case CHECK_PHONE:
-                ToastUtils.makeToast(R.id.check_phone_fail);
+                ToastUtils.makeToast(R.string.check_phone_fail);
                 break;
             case SEND_CODE:
-                ToastUtils.makeToast(R.id.request_code_fail);
+                ToastUtils.makeToast(R.string.request_code_fail);
                 break;
             case VERIFY_CODE:
                 LoadDialog.dismiss(context);
-                ToastUtils.makeToast(R.id.verify_code_fail);
+                ToastUtils.makeToast(R.string.verify_code_fail);
                 break;
             case REGISTER:
                 LoadDialog.dismiss(context);
-                ToastUtils.makeToast(R.id.reg_request_fail);
+                ToastUtils.makeToast(R.string.reg_request_fail);
                 break;
         }
     }

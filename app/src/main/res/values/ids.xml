@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <item name="check_phone_fail" type="id">手机号可用请求失败</item>
-    <item name="request_code_fail" type="id">获取验证码请求失败</item>
-    <item name="verify_code_fail" type="id">验证码是否可用请求失败</item>
-    <item name="reg_request_fail" type="id">注册请求失败</item>
-</resources>
