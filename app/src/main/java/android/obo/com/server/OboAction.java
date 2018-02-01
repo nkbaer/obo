@@ -33,7 +33,7 @@ public class OboAction extends BaseAction
     public LoginResponse login(String phone, String password) throws Exception
     {
         //TODO login实际地址
-        String uri = getURL("user/login");
+        String uri = getURL("appservice/login");
         String json = JsonManager.beanToJson(new LoginRequest(phone, password));
         Request request = new Request.Builder().url(uri).post(RequestBody.create(MEDIA_TYPE_JSON, json)).build();
         Response response = okHttpClient.newCall(request).execute();
@@ -56,7 +56,7 @@ public class OboAction extends BaseAction
      */
     public GetTokenResponse getToken() throws Exception
     {
-        String url = getURL("user/get_token");
+        String url = getURL("appservice/getrongcloudtoken");
         String json = JsonManager.beanToJson(new GetTokenRequest());
         Request request = new Request.Builder().url(url).post(RequestBody.create(MEDIA_TYPE_JSON, json)).build();
         Response response = okHttpClient.newCall(request).execute();

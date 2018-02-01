@@ -189,43 +189,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
             {
                 case LOGIN:
                     LoginResponse loginResponse = (LoginResponse) result;
-                    if (loginResponse.getCode() == HTTP_RESPONSE_OK)
+                    if (loginResponse.getResultType() == HTTP_RESPONSE_OK)
                     {
-                        loginToken = loginResponse.getResult().getToken();
-                        if (!TextUtils.isEmpty(loginToken))
-                        {
-                            RongIM.connect(loginToken, new RongIMClient.ConnectCallback()
-                            {
-                                @Override
-                                public void onTokenIncorrect()
-                                {
-                                    Log.e("connect", "onTokenIncorrect");
-                                    reGetToken();
-                                }
-
-                                @Override
-                                public void onSuccess(String s)
-                                {
-                                    connectResultId = s;
-                                    Log.e("connect", "onSuccess userid:" + s);
-                                    ConfigHelper.setLoginId(s);
-                                    request(SYNC_USER_INFO, true);
-                                }
-
-                                @Override
-                                public void onError(RongIMClient.ErrorCode errorCode)
-                                {
-                                    Log.e("connect", "onError errorcode:" + errorCode.getValue());
-                                }
-                            });
-                        }
+                        //
+                        Log.d(TAG,"login id:"+loginResponse.getResultType()+",desc:"+loginResponse.getDesc());
+                        request(GET_TOKEN);
                     }
-                    else if (loginResponse.getCode() == 100)
-                    {
-                        LoadDialog.dismiss(context);
-                        ToastUtils.makeToast(R.string.phone_or_psw_error);
-                    }
-                    else if (loginResponse.getCode() == 1000)
+                    else if (loginResponse.getResultType() == 1)
                     {
                         LoadDialog.dismiss(context);
                         ToastUtils.makeToast(R.string.phone_or_psw_error);

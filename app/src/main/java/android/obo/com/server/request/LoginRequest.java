@@ -8,22 +8,22 @@ import android.obo.com.utils.JsonManager;
 
 public class LoginRequest
 {
-    private String phone;
+    private String loginname;
     private String password;
 
-    public LoginRequest(String phone, String password) {
-        this.phone = phone;
+    public LoginRequest(String loginname, String password) {
+        this.loginname = loginname;
         this.password = password;
     }
 
-    public String getPhone()
+    public String getLoginname()
     {
-        return phone;
+        return loginname;
     }
 
-    public void setPhone(String phone)
+    public void setLoginname(String loginname)
     {
-        this.phone = phone;
+        this.loginname = loginname;
     }
 
     public String getPassword()
