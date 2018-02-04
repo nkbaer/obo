@@ -1,6 +1,7 @@
 package android.obo.com.obo;
 
 import android.app.Application;
+import android.obo.com.server.response.Account;
 import android.os.Handler;
 import android.util.Log;
 
@@ -15,6 +16,8 @@ public class App extends Application
 
     private static final String TAG = "App";
     public static volatile Handler applicationHandler = null;
+    public String loginSessionId = "";
+    public Account account;
 
     @Override
     public void onCreate()

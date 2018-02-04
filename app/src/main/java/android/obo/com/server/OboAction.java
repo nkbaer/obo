@@ -3,8 +3,12 @@ package android.obo.com.server;
 import android.content.Context;
 import android.obo.com.server.request.GetTokenRequest;
 import android.obo.com.server.request.LoginRequest;
+import android.obo.com.server.request.RegisterRequest;
 import android.obo.com.server.response.GetTokenResponse;
+import android.obo.com.server.response.GetUserInfoByIdResponse;
 import android.obo.com.server.response.LoginResponse;
+import android.obo.com.server.response.RegisterResponse;
+import android.obo.com.server.response.SendCodeResponse;
 import android.obo.com.utils.JsonManager;
 import android.text.TextUtils;
 
@@ -33,21 +37,22 @@ public class OboAction extends BaseAction
     public LoginResponse login(String phone, String password) throws Exception
     {
         //TODO login实际地址
-        String uri = getURL("appservice/login");
-        String json = JsonManager.beanToJson(new LoginRequest(phone, password));
-        Request request = new Request.Builder().url(uri).post(RequestBody.create(MEDIA_TYPE_JSON, json)).build();
-        Response response = okHttpClient.newCall(request).execute();
-        String responseJson = response.body().string();
-        if (!response.isSuccessful())
-        {
-            throw new Exception("unexpectedCode:" + response);
-        }
-        LoginResponse result = null;
-        if (!TextUtils.isEmpty(responseJson))
-        {
-            result = JsonManager.jsonToBean(responseJson, LoginResponse.class);
-        }
-        return result;
+//        String uri = getURL("appservice/login");
+//        String json = JsonManager.beanToJson(new LoginRequest(phone, password));
+//        Request request = new Request.Builder().url(uri).post(RequestBody.create(MEDIA_TYPE_JSON, json)).build();
+//        Response response = okHttpClient.newCall(request).execute();
+//        String responseJson = response.body().string();
+//        if (!response.isSuccessful())
+//        {
+//            throw new Exception("unexpectedCode:" + response);
+//        }
+//        LoginResponse result = null;
+//        if (!TextUtils.isEmpty(responseJson))
+//        {
+//            result = JsonManager.jsonToBean(responseJson, LoginResponse.class);
+//        }
+//        return result;
+        return (LoginResponse) httpPost("appservice/login",new LoginRequest(phone,password),LoginResponse.class);
     }
 
     /**
@@ -56,27 +61,17 @@ public class OboAction extends BaseAction
      */
     public GetTokenResponse getToken() throws Exception
     {
-        String url = getURL("appservice/getrongcloudtoken");
-        String json = JsonManager.beanToJson(new GetTokenRequest());
-        Request request = new Request.Builder().url(url).post(RequestBody.create(MEDIA_TYPE_JSON, json)).build();
-        Response response = okHttpClient.newCall(request).execute();
-        String responseJson = response.body().string();
-
-        GetTokenResponse result = null;
-        if (!TextUtils.isEmpty(responseJson)) {
-            result = JsonManager.jsonToBean(responseJson, GetTokenResponse.class);
-        }
-        return result;
+        return (GetTokenResponse) httpPost("appservice/getrongcloudtoken",null,GetTokenResponse.class);
     }
 
     /**
      * 获取用户信息
-     * @param connectResultId
+     * @param userId
      * @return
      */
-    public Object getUserInfoById(String connectResultId)
+    public GetUserInfoByIdResponse getUserInfoById(String userId) throws Exception
     {
-        return null;
+        return (GetUserInfoByIdResponse) httpPost("appservice/getpreference/"+userId,null,GetUserInfoByIdResponse.class);
     }
 
     /**
@@ -85,9 +80,10 @@ public class OboAction extends BaseAction
      * @param phone
      * @return
      */
-    public Object checkPhoneAvailable(String prefix, String phone)
+    public boolean checkPhoneAvailable(String prefix, String phone)
     {
-        return null;
+        //检查后台检测词电话号码是否注册过
+        return true;
     }
 
     /**
@@ -96,9 +92,9 @@ public class OboAction extends BaseAction
      * @param phone
      * @return
      */
-    public Object sendCode(String prefix, String phone)
+    public SendCodeResponse sendCode(String prefix, String phone) throws Exception
     {
-        return null;
+        return (SendCodeResponse) httpPost("appservice/getmobilecode/"+phone,null, SendCodeResponse.class);
     }
 
     /**
@@ -108,20 +104,21 @@ public class OboAction extends BaseAction
      * @param code
      * @return
      */
-    public Object verifyCode(String prefix, String phone, String code)
+    public boolean verifyCode(String prefix, String phone, String code)
     {
-        return null;
+        //验证短信验证码
+        return true;
     }
 
     /**
      * 注册
-     * @param nickname
+     * @param phone
      * @param password
-     * @param codetoken
+     * @param mobilecode
      * @return
      */
-    public Object register(String nickname, String password, String codetoken)
+    public RegisterResponse register(String phone, String password, String mobilecode) throws Exception
     {
-        return null;
+        return (RegisterResponse) httpPost("appservice/register",new RegisterRequest(phone,password,mobilecode),RegisterResponse.class);
     }
 }

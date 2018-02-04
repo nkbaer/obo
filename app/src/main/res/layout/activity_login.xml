@@ -43,7 +43,6 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:hint="@string/phone_number"
-                    android:inputType="phone"
                     android:maxLines="1"
                     android:maxLength="11"
                     android:textColor="@color/cwet_text_color"

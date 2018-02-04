@@ -40,15 +40,12 @@ public class JsonManager
     public static void main(String[] args) throws Exception
     {
         LoginResponse response = new LoginResponse();
-        response.setCode(100);
-        LoginResponse.ResultEntity entity = new LoginResponse.ResultEntity();
-        entity.setId("123");
-        entity.setToken("12431212");
-        response.setResult(entity);
+        response.setResultType(1);
+        response.setDesc("123");
         String json = beanToJson(response);
         System.out.println(json);
 
         LoginResponse result = jsonToBean(json,LoginResponse.class);
-        System.out.println(result.getCode()+","+result.getResult().getId()+","+result.getResult().getToken());
+        System.out.println(result.getResultType()+","+result.getDesc());
     }
 }

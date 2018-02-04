@@ -38,7 +38,7 @@ public class LoginRequest
 
     public static void main(String[] args) throws Exception
     {
-        LoginRequest request = new LoginRequest("12345","123456");
+        LoginRequest request = new LoginRequest("15922092222","123456");
 
         System.out.println(JsonManager.beanToJson(request));
     }

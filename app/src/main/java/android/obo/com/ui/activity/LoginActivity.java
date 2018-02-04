@@ -2,6 +2,7 @@ package android.obo.com.ui.activity;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.obo.com.obo.App;
 import android.obo.com.obo.R;
 import android.obo.com.server.response.GetTokenResponse;
 import android.obo.com.server.response.GetUserInfoByIdResponse;
@@ -41,7 +42,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
     private TextView tv_login_forgot, tv_login_register;
     private String phoneString;
     private String passwordString;
-    private String connectResultId;
+    private String connectResultId;//登录后获取到的userid
     private String loginToken;
 
     @Override
@@ -193,6 +194,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
                     {
                         //
                         Log.d(TAG,"login id:"+loginResponse.getResultType()+",desc:"+loginResponse.getDesc());
+                        App.getInstance().loginSessionId = loginResponse.getDesc();
                         request(GET_TOKEN);
                     }
                     else if (loginResponse.getResultType() == 1)
@@ -203,14 +205,23 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
                     break;
                 case SYNC_USER_INFO:
                     GetUserInfoByIdResponse userInfoByIdResponse = (GetUserInfoByIdResponse) result;
-                    if (userInfoByIdResponse.getCode() == HTTP_RESPONSE_OK)
+                    if (userInfoByIdResponse.getResultType() == HTTP_RESPONSE_OK)
                     {
-                        if (TextUtils.isEmpty(userInfoByIdResponse.getResult().getPortraitUri()))
+                        App.getInstance().account = userInfoByIdResponse.getAccount();
+                        if (TextUtils.isEmpty(userInfoByIdResponse.getAccount().getHeadPicUrl()))
                         {
                             Log.e(TAG,"portraitUri is null");
                         }
-                        String nickName = userInfoByIdResponse.getResult().getNickname();
-                        String portraitUri = userInfoByIdResponse.getResult().getPortraitUri();
+                        String nickName = userInfoByIdResponse.getAccount().getNickname();
+                        String portraitUri = userInfoByIdResponse.getAccount().getHeadPicUrl();
+                        if (portraitUri == null)
+                        {
+                            portraitUri = "";
+                        }
+                        if (nickName == null)
+                        {
+                            nickName = "";
+                        }
                         ConfigHelper.setLoginName(nickName);
                         ConfigHelper.setPortraitUri(portraitUri);
                         RongIM.getInstance().refreshUserInfoCache(new UserInfo(connectResultId, nickName, Uri.parse(portraitUri)));
@@ -221,9 +232,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
                     break;
                 case GET_TOKEN:
                     GetTokenResponse tokenResponse = (GetTokenResponse) result;
-                    if (tokenResponse.getCode() == HTTP_RESPONSE_OK)
+                    if (tokenResponse.getResultType() == HTTP_RESPONSE_OK)
                     {
-                        String token = tokenResponse.getResult().getToken();
+                        String token = tokenResponse.getDesc();
                         if (!TextUtils.isEmpty(token))
                         {
                             RongIM.connect(token, new RongIMClient.ConnectCallback()
@@ -291,7 +302,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener
         ConfigHelper.setLoginPassword(passwordString);
         LoadDialog.dismiss(context);
         ToastUtils.makeToast(R.string.login_success);
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        String friendAccount = String.valueOf(App.getInstance().account.getCurrentFriendId());
+        RongIM.getInstance().startPrivateChat(this,friendAccount,"聊天");
+        //startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
     }
 }

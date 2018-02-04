@@ -15,9 +15,11 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by liuhfa on 2018/1/25.
@@ -38,6 +40,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private TextView tv_reg_forget,tv_reg_login;
 
     private String mPhone, mCode, mNickName, mPassword, mCodeToken;
+    private String mobileCode;//手机收到的短信验证码
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -146,7 +149,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             case VERIFY_CODE:
                 return action.verifyCode("86", mPhone, mCode);
             case REGISTER:
-                return action.register(mNickName, mPassword, mCodeToken);
+                Log.d(TAG,"register:"+mPhone+","+mPassword+","+mobileCode);
+                return action.register(mPhone, mPassword, mobileCode);
         }
         return super.doInBackground(requestCode, parameter);
     }
@@ -157,67 +161,81 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         if (result != null) {
             switch (requestCode) {
                 case CHECK_PHONE:
-                    CheckPhoneResponse cprres = (CheckPhoneResponse) result;
-                    if (cprres.getCode() == HTTP_RESPONSE_OK) {
-                        if (cprres.isResult()) {
-                            btn_reg_getcode.setClickable(true);
-                            btn_reg_getcode.setBackgroundDrawable(getResources().getDrawable(R.drawable.rs_select_btn_blue));
-                            ToastUtils.makeToast(R.string.phone_number_available);
-                        } else {
-                            btn_reg_getcode.setClickable(false);
-                            btn_reg_getcode.setBackgroundDrawable(getResources().getDrawable(R.drawable.rs_select_btn_gray));
-                            ToastUtils.makeToast(R.string.phone_number_has_been_registered);
-                        }
+                    boolean cprres = (Boolean) result;
+                    if (cprres) {
+                        btn_reg_getcode.setClickable(true);
+                        btn_reg_getcode.setBackgroundDrawable(getResources().getDrawable(R.drawable.rs_select_btn_blue));
+                        ToastUtils.makeToast(R.string.phone_number_available);
+                    }
+                    else
+                    {
+                        btn_reg_getcode.setClickable(false);
+                        btn_reg_getcode.setBackgroundDrawable(getResources().getDrawable(R.drawable.rs_select_btn_gray));
+                        ToastUtils.makeToast(R.string.phone_number_has_been_registered);
                     }
                     break;
                 case SEND_CODE:
                     SendCodeResponse scrres = (SendCodeResponse) result;
-                    if (scrres.getCode() == HTTP_RESPONSE_OK) {
+                    if (scrres.getResultType() == HTTP_RESPONSE_OK) {
                         ToastUtils.makeToast(R.string.messge_send);
-                    } else if (scrres.getCode() == 5000) {
-                        ToastUtils.makeToast(R.string.message_frequency);
+                        mobileCode = scrres.getDesc();
+                        ToastUtils.makeToast(mobileCode);
+                    } else{
+                        ToastUtils.makeToast(scrres.getDesc());
                     }
                     break;
-
                 case VERIFY_CODE:
-                    VerifyCodeResponse vcres = (VerifyCodeResponse) result;
-                    switch (vcres.getCode()) {
-                        case HTTP_RESPONSE_OK:
-                            mCodeToken = vcres.getResult().getVerification_token();
-                            if (!TextUtils.isEmpty(mCodeToken)) {
-                                request(REGISTER);
-                            } else {
-                                ToastUtils.makeToast("code token is null");
-                                LoadDialog.dismiss(context);
-                            }
-                            break;
-                        case 1000:
-                            //验证码错误
-                            ToastUtils.makeToast(R.string.verification_code_error);
-                            LoadDialog.dismiss(context);
-                            break;
-                        case 2000:
-                            //验证码过期
-                            ToastUtils.makeToast(R.string.verification_code_timeout);
-                            LoadDialog.dismiss(context);
-                            break;
+                    boolean vcres = (boolean) result;
+                    if (vcres)
+                    {
+                        request(REGISTER);
                     }
+                    else
+                    {
+                        LoadDialog.dismiss(context);
+                        ToastUtils.makeToast(R.string.verification_code_error);
+                    }
+//                    VerifyCodeResponse vcres = (VerifyCodeResponse) result;
+//                    switch (vcres.getCode()) {
+//                        case HTTP_RESPONSE_OK:
+//                            mCodeToken = vcres.getResult().getVerification_token();
+//                            if (!TextUtils.isEmpty(mCodeToken)) {
+//                                request(REGISTER);
+//                            } else {
+//                                ToastUtils.makeToast("code token is null");
+//                                LoadDialog.dismiss(context);
+//                            }
+//                            break;
+//                        case 1000:
+//                            //验证码错误
+//                            ToastUtils.makeToast(R.string.verification_code_error);
+//                            LoadDialog.dismiss(context);
+//                            break;
+//                        case 2000:
+//                            //验证码过期
+//                            ToastUtils.makeToast(R.string.verification_code_timeout);
+//                            LoadDialog.dismiss(context);
+//                            break;
+//                    }
                     break;
 
                 case REGISTER:
                     RegisterResponse rres = (RegisterResponse) result;
-                    switch (rres.getCode()) {
-                        case 200:
-                            LoadDialog.dismiss(context);
-                            ToastUtils.makeToast(R.string.register_success);
-                            Intent data = new Intent();
-                            data.putExtra("phone", mPhone);
-                            data.putExtra("password", mPassword);
-                            data.putExtra("nickname", mNickName);
-                            data.putExtra("id", rres.getResult().getId());
-                            setResult(REGISTER_BACK, data);
-                            this.finish();
-                            break;
+                    if (rres.getResultType() == HTTP_RESPONSE_OK)
+                    {
+                        LoadDialog.dismiss(context);
+                        ToastUtils.makeToast(R.string.register_success);
+                        Intent data = new Intent();
+                        data.putExtra("phone", mPhone);
+                        data.putExtra("password", mPassword);
+                        data.putExtra("nickname", mNickName);
+                        setResult(REGISTER_BACK, data);
+                        this.finish();
+                    }
+                    else
+                    {
+                        LoadDialog.dismiss(context);
+                        ToastUtils.makeToast(rres.getDesc());
                     }
                     break;
             }
